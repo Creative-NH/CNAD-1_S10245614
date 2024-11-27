@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+</head>
+<body>
+    <h2>Welcome to the Home Page</h2>
+
+    <div id="userInfo"></div>
+    <div id="loginPrompt" style="display: none;">
+        <p>You are not logged in. Please <a href="pages/login.html">log in</a> to access more features.</p>
+    </div>
+
+    <button id="logoutButton" style="display: none;" onclick="logout()">Logout</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const userID = localStorage.getItem("userID");
+
+            if (!userID) {
+                // If no user is logged in, display the login prompt
+                document.getElementById("loginPrompt").style.display = "block";
+                document.getElementById("logoutButton").style.display = "none";
+            } else {
+                // If a user is logged in, display user info and logout button
+                document.getElementById("userInfo").textContent = `Logged in as User ID: ${userID}`;
+                document.getElementById("loginPrompt").style.display = "none";
+                document.getElementById("logoutButton").style.display = "block";
+            }
+        });
+
+        function logout() {
+            // Clear the user ID from localStorage and redirect to login page
+            localStorage.removeItem("userID");
+            window.location.href = "pages/login.html";  // Redirect to login page
+        }
+    </script>
+</body>
+</html>

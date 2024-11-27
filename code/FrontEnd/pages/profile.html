@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label, input { display: block; margin: 10px 0; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <h2>User Profile</h2>
+    <div id="profileDetails">
+        <p><strong>Email:</strong> <span id="email"></span></p>
+        <p><strong>Membership Tier:</strong> <span id="membershipTier"></span></p>
+        <p><strong>Booking Limit:</strong> <span id="bookingLimit"></span></p>
+        <p><strong>Rate Discount:</strong> <span id="rateDiscount"></span>%</p>
+        <p><strong>Membership Start:</strong> <span id="membershipStart"></span></p>
+        <p><strong>Membership End:</strong> <span id="membershipEnd"></span></p>
+    </div>
+    <button onclick="updateProfile()">Update Profile</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const userID = window.localStorage.getItem("userID");
+            if (!userID) {
+                alert("Please log in first.");
+                window.location.href = "login.html";
+                return;
+            }
+
+            fetch(`http://localhost:5000/api/users/${userID}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("email").textContent = data.email;
+                document.getElementById("membershipTier").textContent = data.membershipTier;
+                document.getElementById("bookingLimit").textContent = data.bookingLimit;
+                document.getElementById("rateDiscount").textContent = data.rateDiscount;
+                document.getElementById("membershipStart").textContent = data.membershipStart || "N/A";
+                document.getElementById("membershipEnd").textContent = data.membershipEnd || "N/A";
+            })
+            .catch(error => {
+                alert("Error fetching profile: " + error.message);
+            });
+        });
+
+        function updateProfile() {
+            const userID = window.localStorage.getItem("userID");
+            if (!userID) {
+                alert("Please log in first.");
+                window.location.href = "login.html";
+                return;
+            }
+
+            window.location.href = `update_profile.html`;
+        }
+    </script>
+</body>
+</html>
